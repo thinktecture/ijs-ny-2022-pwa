@@ -38,6 +38,7 @@ const fileOptions = {
     }]
 };
 const btnSave = document.querySelector('#save');
+btnSave.disabled = !('showSaveFilePicker' in window);
 btnSave.addEventListener('click', async () => {
     const blob = await toBlob(canvas);
     const handle = await window.showSaveFilePicker(fileOptions);
@@ -47,6 +48,7 @@ btnSave.addEventListener('click', async () => {
 });
 
 const btnOpen = document.querySelector('#open');
+btnOpen.disabled = !('showOpenFilePicker' in window);
 btnOpen.addEventListener('click', async () => {
     const [handle] = await window.showOpenFilePicker(fileOptions);
     const file = await handle.getFile();
@@ -55,6 +57,7 @@ btnOpen.addEventListener('click', async () => {
 });
 
 const btnCopy = document.querySelector('#copy');
+btnCopy.disabled = !(navigator.clipboard && 'write' in navigator.clipboard);
 btnCopy.addEventListener('click', async () => {
     const blob = await toBlob(canvas);
     await navigator.clipboard.write([
@@ -63,6 +66,7 @@ btnCopy.addEventListener('click', async () => {
 });
 
 const btnPaste = document.querySelector('#paste');
+btnPaste.disabled = !(navigator.clipboard && 'read' in navigator.clipboard);
 btnPaste.addEventListener('click', async () => {
     const clipboardItems = await navigator.clipboard.read();
     for (const clipboardItem of clipboardItems) {
@@ -77,6 +81,7 @@ btnPaste.addEventListener('click', async () => {
 });
 
 const btnShare = document.querySelector('#share');
+btnShare.disabled = !('canShare' in navigator);
 btnShare.addEventListener('click', async () => {
     const blob = await toBlob(canvas);
     const file = new File([blob], 'untitled.png', {type: 'image/png'});
